@@ -1,0 +1,36 @@
+{
+  "name": "teleman-cache",
+  "version": "0.1.0",
+  "description": "Teleman Server-Side Rendering middleware",
+  "main": "dist/telemanCache.js",
+  "scripts": {
+    "build": "rollup -c rollup.config.esm.mjs && rollup -c rollup.config.umd.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiangfengming/teleman-cache.git"
+  },
+  "keywords": [
+    "teleman",
+    "ssr",
+    "pre-rendering"
+  ],
+  "author": "Jiang Fengming",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jiangfengming/teleman-cache/issues"
+  },
+  "homepage": "https://github.com/jiangfengming/teleman-cache#readme",
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.14.1",
+    "eslint-config-enough": "^0.3.4",
+    "rollup": "^1.2.2",
+    "rollup-plugin-babel": "^4.3.2"
+  },
+  "eslintConfig": {
+    "extends": "enough"
+  }
+}
