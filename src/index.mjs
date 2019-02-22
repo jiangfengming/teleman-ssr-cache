@@ -1,11 +1,9 @@
-export default ({ mode, store, cacheKeyFn, idle = 400, emit } = {}) => {
+export default ({ mode, store, genCacheKey, genTag, idle = 400, onServerCached, onClientConsumed } = {}) => {
   if (mode === 'server') {
   } else {
-
   }
 
   return (ctx, next) => {
-    const cacheKey = cacheKeyFn ? cacheKeyFn(ctx.options.cacheKey) : ctx.options.cacheKey || ctx.url
-
+    const cacheKey = genCacheKey ? genCacheKey(ctx) : ctx.options.cacheKey || ctx.url
   }
 }
