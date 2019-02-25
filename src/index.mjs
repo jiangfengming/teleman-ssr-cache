@@ -1,5 +1,5 @@
 export default ({ mode, variable, cacheKeyFn, tagFn, onServerCached, onClientConsumed } = {}) => {
-  let cache, script
+  let cache, script, serverIdleTimer, clientIdleTimer
 
   if (mode === 'server') {
     if (onClientConsumed) onClientConsumed()
@@ -20,7 +20,6 @@ export default ({ mode, variable, cacheKeyFn, tagFn, onServerCached, onClientCon
     }
   }
 
-  let serverIdleTimer
   function resetServerIdleTimer() {
     clearTimeout(serverIdleTimer)
 
@@ -34,7 +33,6 @@ export default ({ mode, variable, cacheKeyFn, tagFn, onServerCached, onClientCon
     }, 450)
   }
 
-  let clientIdleTimer
   function resetClientIdleTimer() {
     clearTimeout(clientIdleTimer)
 

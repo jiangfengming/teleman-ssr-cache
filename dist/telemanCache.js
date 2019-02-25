@@ -12,7 +12,7 @@
     onServerCached,
     onClientConsumed
   } = {}) => {
-    let cache, script;
+    let cache, script, serverIdleTimer, clientIdleTimer;
 
     if (mode === 'server') {
       if (onClientConsumed) onClientConsumed();
@@ -33,8 +33,6 @@
       }
     }
 
-    let serverIdleTimer;
-
     function resetServerIdleTimer() {
       clearTimeout(serverIdleTimer);
       serverIdleTimer = setTimeout(() => {
@@ -46,8 +44,6 @@
         }
       }, 450);
     }
-
-    let clientIdleTimer;
 
     function resetClientIdleTimer() {
       clearTimeout(clientIdleTimer);
