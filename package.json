@@ -31,6 +31,9 @@
     "rollup-plugin-babel": "^4.3.2"
   },
   "eslintConfig": {
-    "extends": "enough"
+    "extends": "enough",
+    "env": {
+      "browser": true
+    }
   }
 }
