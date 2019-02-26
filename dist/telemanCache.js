@@ -4,15 +4,16 @@
   (global = global || self, global.telemanCache = factory());
 }(this, function () { 'use strict';
 
-  var index = (({
-    mode,
-    variable,
-    cacheKeyFn,
-    tagFn,
-    onServerCached,
-    onClientConsumed
-  } = {}) => {
-    let cache, script, serverIdleTimer, clientIdleTimer;
+  var index = (function (_temp) {
+    var _ref = _temp === void 0 ? {} : _temp,
+        mode = _ref.mode,
+        variable = _ref.variable,
+        cacheKeyFn = _ref.cacheKeyFn,
+        tagFn = _ref.tagFn,
+        onServerCached = _ref.onServerCached,
+        onClientConsumed = _ref.onClientConsumed;
+
+    var cache, script, serverIdleTimer, clientIdleTimer;
 
     if (mode === 'server') {
       if (onClientConsumed) onClientConsumed();
@@ -35,8 +36,8 @@
 
     function resetServerIdleTimer() {
       clearTimeout(serverIdleTimer);
-      serverIdleTimer = setTimeout(() => {
-        script.text = `var ${variable} = ${JSON.stringify(cache)}`;
+      serverIdleTimer = setTimeout(function () {
+        script.text = "var " + variable + " = " + JSON.stringify(cache);
 
         if (onServerCached) {
           onServerCached();
@@ -49,7 +50,7 @@
       clearTimeout(clientIdleTimer);
 
       if (onClientConsumed) {
-        clientIdleTimer = setTimeout(() => {
+        clientIdleTimer = setTimeout(function () {
           if (onClientConsumed) {
             onClientConsumed();
             onClientConsumed = null;
@@ -58,31 +59,35 @@
       }
     }
 
-    return (ctx, next) => {
+    return function (ctx, next) {
       if (!cache) return next();
-      const key = cacheKeyFn ? cacheKeyFn(ctx) : ctx.url;
-      const tag = tagFn ? tagFn(ctx) : '';
-      const hitIndex = cache.findIndex(item => item.key === key);
-      const hit = hitIndex === -1 ? null : cache[hitIndex];
+      var key = cacheKeyFn ? cacheKeyFn(ctx) : ctx.url;
+      var tag = tagFn ? tagFn(ctx) : '';
+      var hitIndex = cache.findIndex(function (item) {
+        return item.key === key;
+      });
+      var hit = hitIndex === -1 ? null : cache[hitIndex];
 
       if (mode === 'server') {
         if (hit && hit.tag === tag) return hit.body;
         clearTimeout(serverIdleTimer);
-        return next().then(body => {
+        return next().then(function (body) {
           cache.push({
-            key,
-            tag,
-            body
+            key: key,
+            tag: tag,
+            body: body
           });
           return body;
-        }).finally(() => {
+        }).finally(function () {
           resetServerIdleTimer();
         });
       } else {
         resetClientIdleTimer();
 
         if (!hit) {
-          return next().finally(() => resetClientIdleTimer());
+          return next().finally(function () {
+            return resetClientIdleTimer();
+          });
         }
 
         cache.splice(hitIndex, 1);
@@ -100,7 +105,9 @@
         if (hit.tag === tag) {
           return hit.body;
         } else {
-          return next().finally(() => resetClientIdleTimer());
+          return next().finally(function () {
+            return resetClientIdleTimer();
+          });
         }
       }
     };
