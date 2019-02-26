@@ -1,6 +1,6 @@
 {
   "name": "teleman-cache",
-  "version": "0.1.0",
+  "version": "0.1.0-0",
   "description": "Teleman Server-Side Rendering middleware",
   "main": "dist/telemanCache",
   "scripts": {
