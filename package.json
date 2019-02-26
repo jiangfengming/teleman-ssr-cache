@@ -2,7 +2,7 @@
   "name": "teleman-cache",
   "version": "0.1.0",
   "description": "Teleman Server-Side Rendering middleware",
-  "main": "dist/telemanCache.js",
+  "main": "dist/telemanCache",
   "scripts": {
     "build": "rollup -c rollup.config.esm.mjs && rollup -c rollup.config.umd.mjs"
   },
