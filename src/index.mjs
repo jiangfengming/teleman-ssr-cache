@@ -47,7 +47,9 @@ export default ({ mode, variable, cacheKeyFn, tagFn, onServerCached, onClientCon
   }
 
   return (ctx, next) => {
-    if (!cache) return next()
+    if (!ctx.options.method || ctx.options.method.toUpperCase() !== 'GET' || !cache) {
+      return next()
+    }
 
     const key = cacheKeyFn ? cacheKeyFn(ctx) : ctx.url
     const tag = tagFn ? tagFn(ctx) : ''
