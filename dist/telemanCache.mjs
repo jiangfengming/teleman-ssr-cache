@@ -54,7 +54,10 @@ var index = (function (_temp) {
   }
 
   return function (ctx, next) {
-    if (!cache) return next();
+    if (!ctx.options.method || ctx.options.method.toUpperCase() !== 'GET' || !cache) {
+      return next();
+    }
+
     var key = cacheKeyFn ? cacheKeyFn(ctx) : ctx.url;
     var tag = tagFn ? tagFn(ctx) : '';
     var hitIndex = cache.findIndex(function (item) {
