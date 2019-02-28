@@ -1,4 +1,4 @@
-export default ({ mode, variable, cacheKeyFn, tagFn, onServerCached, onClientConsumed } = {}) => {
+export default ({ mode, variable, cacheKeyGenerator, tagGenerator, onServerCached, onClientConsumed } = {}) => {
   let cache, script, serverIdleTimer, clientIdleTimer
 
   if (mode === 'server') {
@@ -51,8 +51,8 @@ export default ({ mode, variable, cacheKeyFn, tagFn, onServerCached, onClientCon
       return next()
     }
 
-    const key = cacheKeyFn ? cacheKeyFn(ctx) : ctx.url
-    const tag = tagFn ? tagFn(ctx) : ''
+    const key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url
+    const tag = tagGenerator ? tagGenerator(ctx) : ''
     const hitIndex = cache.findIndex(item => item.key === key)
     const hit = hitIndex === -1 ? null : cache[hitIndex]
 

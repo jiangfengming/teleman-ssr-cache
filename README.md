@@ -14,11 +14,11 @@ api.use(cache({
   mode: CURRENT_ENV, // server | client
   variable: '__API_CACHE__',
 
-  cacheKeyFn(ctx) {
+  cacheKeyGenerator(ctx) {
     return ctx.url.pathname + ctx.url.search
   },
 
-  tagFn(ctx) {
+  tagGenerator(ctx) {
     return ctx.cacheTag
   },
   

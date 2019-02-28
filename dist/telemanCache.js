@@ -8,8 +8,8 @@
     var _ref = _temp === void 0 ? {} : _temp,
         mode = _ref.mode,
         variable = _ref.variable,
-        cacheKeyFn = _ref.cacheKeyFn,
-        tagFn = _ref.tagFn,
+        cacheKeyGenerator = _ref.cacheKeyGenerator,
+        tagGenerator = _ref.tagGenerator,
         onServerCached = _ref.onServerCached,
         onClientConsumed = _ref.onClientConsumed;
 
@@ -64,8 +64,8 @@
         return next();
       }
 
-      var key = cacheKeyFn ? cacheKeyFn(ctx) : ctx.url;
-      var tag = tagFn ? tagFn(ctx) : '';
+      var key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url;
+      var tag = tagGenerator ? tagGenerator(ctx) : '';
       var hitIndex = cache.findIndex(function (item) {
         return item.key === key;
       });
