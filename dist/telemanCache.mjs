@@ -1,7 +1,9 @@
 var index = (function (_temp) {
   var _ref = _temp === void 0 ? {} : _temp,
-      mode = _ref.mode,
-      variable = _ref.variable,
+      _ref$variable = _ref.variable,
+      variable = _ref$variable === void 0 ? '__API_CACHE__' : _ref$variable,
+      _ref$mode = _ref.mode,
+      mode = _ref$mode === void 0 ? window[variable] ? 'client' : 'server' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
       tagGenerator = _ref.tagGenerator,
       onServerCached = _ref.onServerCached,

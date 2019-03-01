@@ -1,4 +1,11 @@
-export default ({ mode, variable, cacheKeyGenerator, tagGenerator, onServerCached, onClientConsumed } = {}) => {
+export default ({
+  variable = '__API_CACHE__',
+  mode = window[variable] ? 'client' : 'server',
+  cacheKeyGenerator,
+  tagGenerator,
+  onServerCached,
+  onClientConsumed
+} = {}) => {
   let cache, script, serverIdleTimer, clientIdleTimer
 
   if (mode === 'server') {
