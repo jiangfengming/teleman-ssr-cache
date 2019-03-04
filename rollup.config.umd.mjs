@@ -4,8 +4,8 @@ export default {
   input: 'src/index.mjs',
   output: {
     format: 'umd',
-    name: 'telemanCache',
-    file: 'dist/telemanCache.js',
+    name: 'telemanSSRCache',
+    file: 'dist/telemanSSRCache.js',
     sourcemap: true
   },
   plugins: [

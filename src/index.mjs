@@ -1,5 +1,5 @@
 export default ({
-  variable = '__API_CACHE__',
+  variable = '__SSR_CACHE__',
   mode = window[variable] ? 'client' : 'server',
   cacheKeyGenerator,
   tagGenerator,

@@ -4,15 +4,22 @@ Teleman Server-Side Rendering middleware
 ## Usage
 ```js
 import Teleman from 'teleman'
-import cache from 'teleman-cache'
+import cache from 'teleman-ssr-cache'
 
 const api = new Teleman({
   urlPrefix: 'https://api.example.com'
 })
 
-api.use(cache({
+api.use(cache())
+```
+
+## Options
+
+```js
+cache({
+  variable: '__SSR_CACHE__',
+
   mode: CURRENT_ENV, // server | client
-  variable: '__API_CACHE__',
 
   cacheKeyGenerator(ctx) {
     return ctx.url.pathname + ctx.url.search
@@ -29,5 +36,8 @@ api.use(cache({
   onClientConsumed() {
     mountAPPIntoDOM()
   }
-}))
+})
 ```
+
+## License
+[MIT](LICENSE)
