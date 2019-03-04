@@ -1,5 +1,13 @@
 # teleman-ssr-cache
-Teleman Server-Side Rendering middleware
+Teleman SSR (Server-Side Rendering) caching middleware.
+
+## Background
+When a prerendered SPA (Single-Page Application) is loaded on the client side, the app will replace the
+prerendered content with initial state, and make AJAX calls to fetch the content.
+Until the responses arrive, the page will stay at the initial state, this causes the flash problem.
+
+This middleware is used to preserve the state of the prerendered page.
+It will cache the AJAX response on server-side rendering, then reuse the cache on the client side.
 
 ## Usage
 ```js
