@@ -51,33 +51,33 @@ cache({
   // Customize the cache tag
   // If a cached response is found by cache key, but the cache tag doesn't met,
   // the cached response will not be used, and will be removed from the cache store.
-  // The main purpose of cache tag is to eliminate the 450ms delay of `onClientConsumed` callback in some circumstances.
+  // The main purpose of cache tag is to eliminate the 450ms delay of `onClientPreloaded` callback in some circumstances.
   // For example, An API will return different response when the user has logged in or not logged in,
   // you can call teleman.get('/article', { id: 123 }, { cacheTag: userId })
   // On the server side rendering, the cache tag is `undefined`
   // On the client side, the cache tag is userId (logged in) or `undefined` (not logged in), so the cache will be used only
   // when not logged in. But anyhow, the cached response will be removed from the cache store.
-  // So `onClientConsumed` can be called immediately when the cache store becomes empty.
+  // So `onClientPreloaded` can be called immediately when the cache store becomes empty.
   // If you don't use cache tag, but append the userId onto the cache key. On the client side, when the request is sent
   // with login state, the cached response will not be hit, so the cache store will never be empty,
-  // and `onClientConsumed` has to be called after 450ms idle.
+  // and `onClientPreloaded` has to be called after 450ms idle.
   tagGenerator(ctx) {
     return ctx.cacheTag
   },
   
   // On the server side, when there's no more requests in 450ms,
   // the middleware will seal the cached responses and insert into <body>,
-  // then `onServerCached` will be called.
+  // then `onServerRendered` will be called.
   // You can use this callback to explicitly tell the server-side rendering engine the prerendering has complete.
-  onServerCached() {
+  onServerRendered() {
     window.PAGE_READY = true  
   },
 
   // On the client side, when all cached responses have been consumed (cache store is empty),
-  // or there's no more requests in 450ms, the `onClientConsumed` callback will be called.
+  // or there's no more requests in 450ms, the `onClientPreloaded` callback will be called.
   // On the server side, the function will be called immediately.
-  // If you use async components, you can mount the app into DOM in this callback to prevent flash problem.
-  onClientConsumed() {
+  // If you use async components, you can mount the app into DOM in this callback to prevent the flash problem.
+  onClientPreloaded() {
     mountAPPIntoDOM()
   }
 })

@@ -3,13 +3,13 @@ export default ({
   mode = window[variable] ? 'client' : 'server',
   cacheKeyGenerator,
   tagGenerator,
-  onServerCached,
-  onClientConsumed
+  onServerRendered,
+  onClientPreloaded
 } = {}) => {
   let cache, script, serverIdleTimer, clientIdleTimer
 
   if (mode === 'server') {
-    if (onClientConsumed) onClientConsumed()
+    if (onClientPreloaded) onClientPreloaded()
     cache = []
     script = document.createElement('script')
     document.body.insertBefore(script, document.body.getElementsByTagName('script')[0] || null)
@@ -17,10 +17,10 @@ export default ({
   } else {
     cache = window[variable]
 
-    if (onClientConsumed) {
+    if (onClientPreloaded) {
       if (!cache || !cache.length) {
-        onClientConsumed()
-        onClientConsumed = null
+        onClientPreloaded()
+        onClientPreloaded = null
       } else {
         resetClientIdleTimer()
       }
@@ -33,9 +33,9 @@ export default ({
     serverIdleTimer = setTimeout(() => {
       script.text = `var ${variable} = ${JSON.stringify(cache)}`
 
-      if (onServerCached) {
-        onServerCached()
-        onServerCached = null
+      if (onServerRendered) {
+        onServerRendered()
+        onServerRendered = null
       }
     }, 450)
   }
@@ -43,11 +43,11 @@ export default ({
   function resetClientIdleTimer() {
     clearTimeout(clientIdleTimer)
 
-    if (onClientConsumed) {
+    if (onClientPreloaded) {
       clientIdleTimer = setTimeout(() => {
-        if (onClientConsumed) {
-          onClientConsumed()
-          onClientConsumed = null
+        if (onClientPreloaded) {
+          onClientPreloaded()
+          onClientPreloaded = null
         }
       }, 450)
     }
@@ -84,10 +84,10 @@ export default ({
       cache.splice(hitIndex, 1)
       if (!cache.length) {
         cache = null
-        if (onClientConsumed) {
+        if (onClientPreloaded) {
           clearTimeout(clientIdleTimer)
-          onClientConsumed()
-          onClientConsumed = null
+          onClientPreloaded()
+          onClientPreloaded = null
         }
       }
 

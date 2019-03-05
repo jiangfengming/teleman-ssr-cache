@@ -6,13 +6,13 @@ var index = (function (_temp) {
       mode = _ref$mode === void 0 ? window[variable] ? 'client' : 'server' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
       tagGenerator = _ref.tagGenerator,
-      onServerCached = _ref.onServerCached,
-      onClientConsumed = _ref.onClientConsumed;
+      onServerRendered = _ref.onServerRendered,
+      onClientPreloaded = _ref.onClientPreloaded;
 
   var cache, script, serverIdleTimer, clientIdleTimer;
 
   if (mode === 'server') {
-    if (onClientConsumed) onClientConsumed();
+    if (onClientPreloaded) onClientPreloaded();
     cache = [];
     script = document.createElement('script');
     document.body.insertBefore(script, document.body.getElementsByTagName('script')[0] || null);
@@ -20,10 +20,10 @@ var index = (function (_temp) {
   } else {
     cache = window[variable];
 
-    if (onClientConsumed) {
+    if (onClientPreloaded) {
       if (!cache || !cache.length) {
-        onClientConsumed();
-        onClientConsumed = null;
+        onClientPreloaded();
+        onClientPreloaded = null;
       } else {
         resetClientIdleTimer();
       }
@@ -35,9 +35,9 @@ var index = (function (_temp) {
     serverIdleTimer = setTimeout(function () {
       script.text = "var " + variable + " = " + JSON.stringify(cache);
 
-      if (onServerCached) {
-        onServerCached();
-        onServerCached = null;
+      if (onServerRendered) {
+        onServerRendered();
+        onServerRendered = null;
       }
     }, 450);
   }
@@ -45,11 +45,11 @@ var index = (function (_temp) {
   function resetClientIdleTimer() {
     clearTimeout(clientIdleTimer);
 
-    if (onClientConsumed) {
+    if (onClientPreloaded) {
       clientIdleTimer = setTimeout(function () {
-        if (onClientConsumed) {
-          onClientConsumed();
-          onClientConsumed = null;
+        if (onClientPreloaded) {
+          onClientPreloaded();
+          onClientPreloaded = null;
         }
       }, 450);
     }
@@ -94,10 +94,10 @@ var index = (function (_temp) {
       if (!cache.length) {
         cache = null;
 
-        if (onClientConsumed) {
+        if (onClientPreloaded) {
           clearTimeout(clientIdleTimer);
-          onClientConsumed();
-          onClientConsumed = null;
+          onClientPreloaded();
+          onClientPreloaded = null;
         }
       }
 
