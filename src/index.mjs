@@ -54,7 +54,7 @@ export default ({
   }
 
   return (ctx, next) => {
-    if (!ctx.options.method || ctx.options.method.toUpperCase() !== 'GET' || !cache) {
+    if (!cache || ctx.options.method && ctx.options.method.toUpperCase() !== 'GET') {
       return next()
     }
 

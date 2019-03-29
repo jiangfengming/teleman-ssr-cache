@@ -56,7 +56,7 @@ var index = (function (_temp) {
   }
 
   return function (ctx, next) {
-    if (!ctx.options.method || ctx.options.method.toUpperCase() !== 'GET' || !cache) {
+    if (!cache || ctx.options.method && ctx.options.method.toUpperCase() !== 'GET') {
       return next();
     }
 
