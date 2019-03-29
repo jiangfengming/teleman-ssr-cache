@@ -22,12 +22,12 @@
   },
   "homepage": "https://github.com/kasha-io/teleman-ssr-cache#readme",
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.15.1",
+    "eslint": "^5.15.3",
     "eslint-config-enough": "^0.3.4",
-    "rollup": "^1.4.1",
+    "rollup": "^1.7.4",
     "rollup-plugin-babel": "^4.3.2"
   },
   "babel": {

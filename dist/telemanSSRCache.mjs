@@ -18,7 +18,7 @@ var index = (function (_temp) {
     document.body.insertBefore(script, document.body.getElementsByTagName('script')[0] || null);
     resetServerIdleTimer();
   } else {
-    cache = window[variable];
+    cache = window[variable] = JSON.parse(decodeURI(window[variable]));
 
     if (onClientPreloaded) {
       if (!cache || !cache.length) {
@@ -33,7 +33,7 @@ var index = (function (_temp) {
   function resetServerIdleTimer() {
     clearTimeout(serverIdleTimer);
     serverIdleTimer = setTimeout(function () {
-      script.text = "var " + variable + " = " + JSON.stringify(cache);
+      script.text = "var " + variable + " = '" + encodeURI(JSON.stringify(cache)) + "'";
 
       if (onServerRendered) {
         onServerRendered();
