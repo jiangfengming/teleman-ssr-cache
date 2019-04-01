@@ -18,10 +18,11 @@
     var cache, script, serverIdleTimer, clientIdleTimer;
 
     if (mode === 'server') {
-      if (onClientPreloaded) onClientPreloaded();
+      if (onClientPreloaded) {
+        onClientPreloaded();
+      }
+
       cache = [];
-      script = document.createElement('script');
-      document.body.insertBefore(script, document.body.getElementsByTagName('script')[0] || null);
       resetServerIdleTimer();
     } else {
       cache = window[variable] = JSON.parse(decodeURI(window[variable]));
@@ -39,6 +40,11 @@
     function resetServerIdleTimer() {
       clearTimeout(serverIdleTimer);
       serverIdleTimer = setTimeout(function () {
+        if (!script) {
+          script = document.createElement('script');
+          document.body.insertBefore(script, document.body.getElementsByTagName('script')[0] || null);
+        }
+
         script.text = "var " + variable + " = '" + encodeURI(JSON.stringify(cache)) + "'";
 
         if (onServerRendered) {
@@ -74,7 +80,10 @@
       var hit = hitIndex === -1 ? null : cache[hitIndex];
 
       if (mode === 'server') {
-        if (hit && hit.tag === tag) return hit.body;
+        if (hit && hit.tag === tag) {
+          return hit.body;
+        }
+
         clearTimeout(serverIdleTimer);
         return next().then(function (body) {
           cache.push({
