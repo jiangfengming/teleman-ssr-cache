@@ -25,7 +25,9 @@
       cache = [];
       resetServerIdleTimer();
     } else {
-      cache = window[variable] = JSON.parse(decodeURI(window[variable]));
+      if (window[variable]) {
+        cache = window[variable] = JSON.parse(decodeURI(window[variable]));
+      }
 
       if (onClientPreloaded) {
         if (!cache || !cache.length) {
