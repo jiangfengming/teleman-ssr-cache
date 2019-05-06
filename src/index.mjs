@@ -3,6 +3,8 @@ export default ({
   mode = window[variable] ? 'client' : 'server',
   cacheKeyGenerator,
   tagGenerator,
+  cacheValidator,
+  useCacheOnError,
   onServerRendered,
   onClientPreloaded
 } = {}) => {
@@ -92,6 +94,7 @@ export default ({
       }
 
       cache.splice(hitIndex, 1)
+
       if (!cache.length) {
         cache = null
 
@@ -102,10 +105,25 @@ export default ({
         }
       }
 
-      if (hit.tag === tag) {
+      const isHit = hit.tag === tag
+
+      if (isHit && cacheValidator ? cacheValidator(ctx) : true) {
         return hit.body
       } else {
-        return next().finally(() => resetClientIdleTimer())
+        let promise = next()
+
+        if (isHit && useCacheOnError) {
+          promise = promise.catch(e => {
+            if (useCacheOnError === true ||
+              useCacheOnError && useCacheOnError.constructor === Function && useCacheOnError(e, hit.body, ctx)) {
+              return hit.body
+            } else {
+              throw e
+            }
+          })
+        }
+
+        return promise.finally(() => resetClientIdleTimer())
       }
     }
   }
