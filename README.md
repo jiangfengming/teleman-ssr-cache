@@ -64,6 +64,21 @@ cache({
   tagGenerator(ctx) {
     return ctx.cacheTag
   },
+
+  // Cache validator function.
+  cacheValidator(ctx) {
+    return true
+  },
+
+  // Whether to use cached response if the request failed.
+  useCacheOnError: false,
+
+  // Or function:
+  /*
+  useCacheOnError(error, cachedResonse, ctx) {
+    return true
+  },
+  */
   
   // On the server side, when there's no more requests in 450ms,
   // the middleware will seal the cached responses and insert into <body>,
