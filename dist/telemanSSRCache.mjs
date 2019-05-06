@@ -6,6 +6,8 @@ var index = (function (_temp) {
       mode = _ref$mode === void 0 ? window[variable] ? 'client' : 'server' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
       tagGenerator = _ref.tagGenerator,
+      cacheValidator = _ref.cacheValidator,
+      useCacheOnError = _ref.useCacheOnError,
       onServerRendered = _ref.onServerRendered,
       onClientPreloaded = _ref.onClientPreloaded;
 
@@ -88,14 +90,14 @@ var index = (function (_temp) {
           body: body
         });
         return body;
-      }).finally(function () {
+      })["finally"](function () {
         resetServerIdleTimer();
       });
     } else {
       resetClientIdleTimer();
 
       if (!hit) {
-        return next().finally(function () {
+        return next()["finally"](function () {
           return resetClientIdleTimer();
         });
       }
@@ -112,10 +114,24 @@ var index = (function (_temp) {
         }
       }
 
-      if (hit.tag === tag) {
+      var isHit = hit.tag === tag;
+
+      if (isHit && cacheValidator ? cacheValidator(ctx) : true) {
         return hit.body;
       } else {
-        return next().finally(function () {
+        var promise = next();
+
+        if (isHit && useCacheOnError) {
+          promise = promise["catch"](function (e) {
+            if (useCacheOnError === true || useCacheOnError && useCacheOnError.constructor === Function && useCacheOnError(e, hit.body, ctx)) {
+              return hit.body;
+            } else {
+              throw e;
+            }
+          });
+        }
+
+        return promise["finally"](function () {
           return resetClientIdleTimer();
         });
       }
