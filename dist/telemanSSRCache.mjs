@@ -71,7 +71,7 @@ var index = (function (_temp) {
     }
 
     var key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url;
-    var tag = tagGenerator ? tagGenerator(ctx) : '';
+    var tag = tagGenerator ? tagGenerator(ctx) : undefined;
     var hitIndex = cache.findIndex(function (item) {
       return item.key === key;
     });
@@ -116,7 +116,7 @@ var index = (function (_temp) {
 
       var isHit = hit.tag === tag;
 
-      if (isHit && cacheValidator ? cacheValidator(ctx) : true) {
+      if (isHit && (cacheValidator ? cacheValidator(ctx) : true)) {
         return hit.body;
       } else {
         var promise = next();

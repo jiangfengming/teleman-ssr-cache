@@ -69,7 +69,7 @@ export default ({
     }
 
     const key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url
-    const tag = tagGenerator ? tagGenerator(ctx) : ''
+    const tag = tagGenerator ? tagGenerator(ctx) : undefined
     const hitIndex = cache.findIndex(item => item.key === key)
     const hit = hitIndex === -1 ? null : cache[hitIndex]
 
@@ -107,7 +107,7 @@ export default ({
 
       const isHit = hit.tag === tag
 
-      if (isHit && cacheValidator ? cacheValidator(ctx) : true) {
+      if (isHit && (cacheValidator ? cacheValidator(ctx) : true)) {
         return hit.body
       } else {
         let promise = next()
