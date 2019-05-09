@@ -5,7 +5,6 @@ var index = (function (_temp) {
       _ref$mode = _ref.mode,
       mode = _ref$mode === void 0 ? window[variable] ? 'client' : 'server' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
-      tagGenerator = _ref.tagGenerator,
       cacheValidator = _ref.cacheValidator,
       useCacheOnError = _ref.useCacheOnError,
       onServerRendered = _ref.onServerRendered,
@@ -71,14 +70,13 @@ var index = (function (_temp) {
     }
 
     var key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url;
-    var tag = tagGenerator ? tagGenerator(ctx) : undefined;
     var hitIndex = cache.findIndex(function (item) {
       return item.key === key;
     });
     var hit = hitIndex === -1 ? null : cache[hitIndex];
 
     if (mode === 'server') {
-      if (hit && hit.tag === tag) {
+      if (hit) {
         return hit.body;
       }
 
@@ -86,7 +84,6 @@ var index = (function (_temp) {
       return next().then(function (body) {
         cache.push({
           key: key,
-          tag: tag,
           body: body
         });
         return body;
@@ -114,14 +111,12 @@ var index = (function (_temp) {
         }
       }
 
-      var isHit = hit.tag === tag;
-
-      if (isHit && (cacheValidator ? cacheValidator(ctx) : true)) {
+      if (cacheValidator ? cacheValidator(ctx) : true) {
         return hit.body;
       } else {
         var promise = next();
 
-        if (isHit && useCacheOnError) {
+        if (useCacheOnError) {
           promise = promise["catch"](function (e) {
             if (useCacheOnError === true || useCacheOnError && useCacheOnError.constructor === Function && useCacheOnError(e, hit.body, ctx)) {
               return hit.body;

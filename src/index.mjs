@@ -2,7 +2,6 @@ export default ({
   variable = '__SSR_CACHE__',
   mode = window[variable] ? 'client' : 'server',
   cacheKeyGenerator,
-  tagGenerator,
   cacheValidator,
   useCacheOnError,
   onServerRendered,
@@ -69,19 +68,18 @@ export default ({
     }
 
     const key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url
-    const tag = tagGenerator ? tagGenerator(ctx) : undefined
     const hitIndex = cache.findIndex(item => item.key === key)
     const hit = hitIndex === -1 ? null : cache[hitIndex]
 
     if (mode === 'server') {
-      if (hit && hit.tag === tag) {
+      if (hit) {
         return hit.body
       }
 
       clearTimeout(serverIdleTimer)
 
       return next().then(body => {
-        cache.push({ key, tag, body })
+        cache.push({ key, body })
         return body
       }).finally(() => {
         resetServerIdleTimer()
@@ -105,14 +103,12 @@ export default ({
         }
       }
 
-      const isHit = hit.tag === tag
-
-      if (isHit && (cacheValidator ? cacheValidator(ctx) : true)) {
+      if (cacheValidator ? cacheValidator(ctx) : true) {
         return hit.body
       } else {
         let promise = next()
 
-        if (isHit && useCacheOnError) {
+        if (useCacheOnError) {
           promise = promise.catch(e => {
             if (useCacheOnError === true ||
               useCacheOnError && useCacheOnError.constructor === Function && useCacheOnError(e, hit.body, ctx)) {
