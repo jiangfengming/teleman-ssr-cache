@@ -70,10 +70,9 @@ var index = (function (_temp) {
     }
 
     var key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url;
-    var hitIndex = cache.findIndex(function (item) {
+    var hit = cache.find(function (item) {
       return item.key === key;
     });
-    var hit = hitIndex === -1 ? null : cache[hitIndex];
 
     if (mode === 'server') {
       if (hit) {
@@ -99,19 +98,8 @@ var index = (function (_temp) {
         });
       }
 
-      cache.splice(hitIndex, 1);
-
-      if (!cache.length) {
-        cache = null;
-
-        if (onClientPreloaded) {
-          clearTimeout(clientIdleTimer);
-          onClientPreloaded();
-          onClientPreloaded = null;
-        }
-      }
-
       if (cacheValidator ? cacheValidator(ctx) : true) {
+        cleanCache();
         return hit.body;
       } else {
         var promise = next();
@@ -127,8 +115,33 @@ var index = (function (_temp) {
         }
 
         return promise["finally"](function () {
-          return resetClientIdleTimer();
+          cleanCache();
+          resetClientIdleTimer();
         });
+      }
+    }
+
+    function cleanCache() {
+      if (!cache) {
+        return;
+      }
+
+      var i = cache.indexOf(hit);
+
+      if (i === -1) {
+        return;
+      }
+
+      cache.splice(i, 1);
+
+      if (!cache.length) {
+        cache = null;
+
+        if (onClientPreloaded) {
+          clearTimeout(clientIdleTimer);
+          onClientPreloaded();
+          onClientPreloaded = null;
+        }
       }
     }
   };

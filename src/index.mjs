@@ -68,8 +68,7 @@ export default ({
     }
 
     const key = cacheKeyGenerator ? cacheKeyGenerator(ctx) : ctx.url
-    const hitIndex = cache.findIndex(item => item.key === key)
-    const hit = hitIndex === -1 ? null : cache[hitIndex]
+    const hit = cache.find(item => item.key === key)
 
     if (mode === 'server') {
       if (hit) {
@@ -91,19 +90,8 @@ export default ({
         return next().finally(() => resetClientIdleTimer())
       }
 
-      cache.splice(hitIndex, 1)
-
-      if (!cache.length) {
-        cache = null
-
-        if (onClientPreloaded) {
-          clearTimeout(clientIdleTimer)
-          onClientPreloaded()
-          onClientPreloaded = null
-        }
-      }
-
       if (cacheValidator ? cacheValidator(ctx) : true) {
+        cleanCache()
         return hit.body
       } else {
         let promise = next()
@@ -119,7 +107,34 @@ export default ({
           })
         }
 
-        return promise.finally(() => resetClientIdleTimer())
+        return promise.finally(() => {
+          cleanCache()
+          resetClientIdleTimer()
+        })
+      }
+    }
+
+    function cleanCache() {
+      if (!cache) {
+        return
+      }
+
+      const i = cache.indexOf(hit)
+
+      if (i === -1) {
+        return
+      }
+
+      cache.splice(i, 1)
+
+      if (!cache.length) {
+        cache = null
+
+        if (onClientPreloaded) {
+          clearTimeout(clientIdleTimer)
+          onClientPreloaded()
+          onClientPreloaded = null
+        }
       }
     }
   }
