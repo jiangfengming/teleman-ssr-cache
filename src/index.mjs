@@ -40,7 +40,7 @@ export default ({
         document.body.insertBefore(script, document.body.getElementsByTagName('script')[0] || null)
       }
 
-      script.text = `var ${variable} = '${encodeURI(JSON.stringify(cache))}'`
+      script.text = `var ${variable} = "${encodeURI(JSON.stringify(cache))}"`
 
       if (onServerRendered) {
         onServerRendered()
