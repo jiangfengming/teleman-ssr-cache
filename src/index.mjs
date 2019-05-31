@@ -46,7 +46,7 @@ export default ({
         onServerRendered()
         onServerRendered = null
       }
-    }, 450)
+    }, 400)
   }
 
   function resetClientIdleTimer() {
@@ -58,7 +58,7 @@ export default ({
           onClientPreloaded()
           onClientPreloaded = null
         }
-      }, 450)
+      }, 400)
     }
   }
 

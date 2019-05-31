@@ -4,7 +4,7 @@ export default {
   input: 'src/index.mjs',
   output: {
     format: 'esm',
-    file: 'dist/telemanSSRCache.mjs',
+    file: 'dist/index.mjs',
     sourcemap: true
   },
   plugins: [

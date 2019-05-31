@@ -48,7 +48,7 @@ var index = (function (_temp) {
         onServerRendered();
         onServerRendered = null;
       }
-    }, 450);
+    }, 400);
   }
 
   function resetClientIdleTimer() {
@@ -60,7 +60,7 @@ var index = (function (_temp) {
           onClientPreloaded();
           onClientPreloaded = null;
         }
-      }, 450);
+      }, 400);
     }
   }
 
@@ -148,4 +148,4 @@ var index = (function (_temp) {
 });
 
 export default index;
-//# sourceMappingURL=telemanSSRCache.mjs.map
+//# sourceMappingURL=index.mjs.map
