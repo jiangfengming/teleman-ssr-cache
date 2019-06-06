@@ -83,7 +83,8 @@ var index = (function (_temp) {
       return next().then(function (body) {
         cache.push({
           key: key,
-          body: body
+          body: JSON.parse(JSON.stringify(body)) // unreference
+
         });
         return body;
       })["finally"](function () {
