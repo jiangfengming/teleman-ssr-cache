@@ -78,7 +78,10 @@ export default ({
       clearTimeout(serverIdleTimer)
 
       return next().then(body => {
-        cache.push({ key, body })
+        cache.push({
+          key,
+          body: JSON.parse(JSON.stringify(body)) // unreference
+        })
         return body
       }).finally(() => {
         resetServerIdleTimer()
