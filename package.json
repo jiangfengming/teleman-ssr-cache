@@ -1,6 +1,6 @@
 {
   "name": "teleman-ssr-cache",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Teleman Server-Side Rendering middleware",
   "main": "dist/index.mjs",
   "scripts": {
