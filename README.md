@@ -48,22 +48,6 @@ cache({
     return ctx.url.pathname + ctx.url.search
   },
 
-  // Cache validator function.
-  // Runs on the client side.
-  cacheValidator(ctx) {
-    return true
-  },
-
-  // Whether to use cached response if the request failed.
-  useCacheOnError: false,
-
-  // Or function:
-  /*
-  useCacheOnError(error, cachedResonse, ctx) {
-    return true
-  },
-  */
-  
   // On the server side, when there's no more requests in 450ms,
   // the middleware will seal the cached responses and insert into <body>,
   // then `onServerRendered` will be called.

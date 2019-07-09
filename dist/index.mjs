@@ -5,8 +5,6 @@ var index = (function (_temp) {
       _ref$mode = _ref.mode,
       mode = _ref$mode === void 0 ? window[variable] ? 'client' : 'server' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
-      cacheValidator = _ref.cacheValidator,
-      useCacheOnError = _ref.useCacheOnError,
       onServerRendered = _ref.onServerRendered,
       onClientPreloaded = _ref.onClientPreloaded;
 
@@ -99,27 +97,8 @@ var index = (function (_temp) {
         });
       }
 
-      if (cacheValidator ? cacheValidator(ctx) : true) {
-        cleanCache();
-        return hit.body;
-      } else {
-        var promise = next();
-
-        if (useCacheOnError) {
-          promise = promise["catch"](function (e) {
-            if (useCacheOnError === true || useCacheOnError && useCacheOnError.constructor === Function && useCacheOnError(e, hit.body, ctx)) {
-              return hit.body;
-            } else {
-              throw e;
-            }
-          });
-        }
-
-        return promise["finally"](function () {
-          cleanCache();
-          resetClientIdleTimer();
-        });
-      }
+      cleanCache();
+      return hit.body;
     }
 
     function cleanCache() {

@@ -2,8 +2,6 @@ export default ({
   variable = '__SSR_CACHE__',
   mode = window[variable] ? 'client' : 'server',
   cacheKeyGenerator,
-  cacheValidator,
-  useCacheOnError,
   onServerRendered,
   onClientPreloaded
 } = {}) => {
@@ -93,28 +91,8 @@ export default ({
         return next().finally(() => resetClientIdleTimer())
       }
 
-      if (cacheValidator ? cacheValidator(ctx) : true) {
-        cleanCache()
-        return hit.body
-      } else {
-        let promise = next()
-
-        if (useCacheOnError) {
-          promise = promise.catch(e => {
-            if (useCacheOnError === true ||
-              useCacheOnError && useCacheOnError.constructor === Function && useCacheOnError(e, hit.body, ctx)) {
-              return hit.body
-            } else {
-              throw e
-            }
-          })
-        }
-
-        return promise.finally(() => {
-          cleanCache()
-          resetClientIdleTimer()
-        })
-      }
+      cleanCache()
+      return hit.body
     }
 
     function cleanCache() {
