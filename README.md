@@ -36,8 +36,8 @@ cache({
   // 'server' means the page is prerendering on the server side,
   // 'client' means the page is rendering on the client side (user's browser).
   // If `mode` isn't set. It is guessed from `variable` option.
-  // If window[variable] is `undefined`, the mode is `server`.
-  // Otherwise, the mode is `client`
+  // If window[variable] is `undefined` and User-Agent includes 'Headless', the mode is `server`.
+  // Otherwise, the mode is `client`.
   mode: 'server',
 
   // Customize the cache key

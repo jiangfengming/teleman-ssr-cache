@@ -1,6 +1,6 @@
 export default ({
   variable = '__SSR_CACHE__',
-  mode = window[variable] ? 'client' : 'server',
+  mode = !window[variable] && /Headless/i.test(navigator.userAgent) ? 'server' : 'client',
   cacheKeyGenerator,
   onServerRendered,
   onClientPreloaded
