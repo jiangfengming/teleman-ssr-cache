@@ -3,7 +3,7 @@ var index = (function (_temp) {
       _ref$variable = _ref.variable,
       variable = _ref$variable === void 0 ? '__SSR_CACHE__' : _ref$variable,
       _ref$mode = _ref.mode,
-      mode = _ref$mode === void 0 ? window[variable] ? 'client' : 'server' : _ref$mode,
+      mode = _ref$mode === void 0 ? !window[variable] && /Headless/i.test(navigator.userAgent) ? 'server' : 'client' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
       onServerRendered = _ref.onServerRendered,
       onClientPreloaded = _ref.onClientPreloaded;
