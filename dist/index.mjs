@@ -11,10 +11,6 @@ var index = (function (_temp) {
   var cache, script, serverIdleTimer, clientIdleTimer;
 
   if (mode === 'server') {
-    if (onClientPreloaded) {
-      onClientPreloaded();
-    }
-
     cache = [];
     resetServerIdleTimer();
   } else {
@@ -85,16 +81,12 @@ var index = (function (_temp) {
 
         });
         return body;
-      })["finally"](function () {
-        resetServerIdleTimer();
-      });
+      })["finally"](resetServerIdleTimer);
     } else {
       resetClientIdleTimer();
 
       if (!hit) {
-        return next()["finally"](function () {
-          return resetClientIdleTimer();
-        });
+        return next()["finally"](resetServerIdleTimer);
       }
 
       cleanCache();

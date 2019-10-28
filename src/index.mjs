@@ -8,10 +8,6 @@ export default ({
   let cache, script, serverIdleTimer, clientIdleTimer
 
   if (mode === 'server') {
-    if (onClientPreloaded) {
-      onClientPreloaded()
-    }
-
     cache = []
     resetServerIdleTimer()
   } else {
@@ -81,14 +77,12 @@ export default ({
           body: JSON.parse(JSON.stringify(body)) // unreference
         })
         return body
-      }).finally(() => {
-        resetServerIdleTimer()
-      })
+      }).finally(resetServerIdleTimer)
     } else {
       resetClientIdleTimer()
 
       if (!hit) {
-        return next().finally(() => resetClientIdleTimer())
+        return next().finally(resetServerIdleTimer)
       }
 
       cleanCache()
