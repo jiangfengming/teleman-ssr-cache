@@ -2,7 +2,7 @@
   "name": "teleman-ssr-cache",
   "version": "0.3.0",
   "description": "Teleman Server-Side Rendering middleware",
-  "main": "dist/index.mjs",
+  "main": "dist/teleman-ssr-cache.js",
   "scripts": {
     "build": "rollup -c rollup.config.js"
   },
@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/kasha-io/teleman-ssr-cache#readme",
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "eslint": "^6.6.0",
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "eslint": "^6.8.0",
     "eslint-config-enough": "^0.3.8",
-    "rollup": "^1.26.0",
+    "rollup": "^1.32.0",
     "rollup-plugin-babel": "^4.3.3"
   },
   "babel": {

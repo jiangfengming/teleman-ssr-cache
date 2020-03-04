@@ -1,12 +1,14 @@
 import babel from 'rollup-plugin-babel'
 
 export default {
-  input: 'src/index.mjs',
+  input: 'src/index.js',
+
   output: {
     format: 'esm',
-    file: 'dist/index.mjs',
+    file: 'dist/teleman-ssr-cache.js',
     sourcemap: true
   },
+
   plugins: [
     babel()
   ]
