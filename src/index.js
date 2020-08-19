@@ -107,8 +107,11 @@ export default ({
 
         if (onClientPreloaded) {
           clearTimeout(clientIdleTimer)
-          onClientPreloaded()
-          onClientPreloaded = null
+
+          setTimeout(() => {
+            onClientPreloaded()
+            onClientPreloaded = null
+          })
         }
       }
     }

@@ -111,8 +111,10 @@ var index = (function (_temp) {
 
         if (onClientPreloaded) {
           clearTimeout(clientIdleTimer);
-          onClientPreloaded();
-          onClientPreloaded = null;
+          setTimeout(function () {
+            onClientPreloaded();
+            onClientPreloaded = null;
+          });
         }
       }
     }
