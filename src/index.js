@@ -76,13 +76,14 @@ export default ({
           key,
           body: JSON.parse(JSON.stringify(body)) // unreference
         })
+
         return body
       }).finally(resetServerIdleTimer)
     } else {
       resetClientIdleTimer()
 
       if (!hit) {
-        return next().finally(resetServerIdleTimer)
+        return next().finally(resetClientIdleTimer)
       }
 
       cleanCache()

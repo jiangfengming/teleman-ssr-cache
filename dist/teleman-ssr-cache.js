@@ -86,7 +86,7 @@ var index = (function (_temp) {
       resetClientIdleTimer();
 
       if (!hit) {
-        return next()["finally"](resetServerIdleTimer);
+        return next()["finally"](resetClientIdleTimer);
       }
 
       cleanCache();
