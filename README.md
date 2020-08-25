@@ -50,13 +50,13 @@ cache({
 
   // On the server side, when there's no more requests in 450ms,
   // the middleware will seal the cached responses and insert into <body>,
-  // then `onServerRendered` will be called.
-  onServerRendered() {
+  // then `onCached` will be called.
+  onCached() {
   },
 
   // On the client side, when all cached responses have been consumed (the cache store becomes empty),
-  // or there's no more requests in 450ms, the `onClientPreloaded` callback will be called.
-  onClientPreloaded() {
+  // or there's no more requests in 450ms, the `onConsumed` callback will be called.
+  onConsumed() {
   }
 })
 ```

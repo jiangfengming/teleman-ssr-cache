@@ -2,8 +2,8 @@ export default ({
   variable = '__SSR_CACHE__',
   mode = !window[variable] && /Headless/i.test(navigator.userAgent) ? 'server' : 'client',
   cacheKeyGenerator,
-  onServerRendered,
-  onClientPreloaded
+  onCached,
+  onConsumed
 } = {}) => {
   let cache, script, serverIdleTimer, clientIdleTimer
 
@@ -15,10 +15,10 @@ export default ({
       cache = window[variable] = JSON.parse(decodeURI(window[variable]))
     }
 
-    if (onClientPreloaded) {
+    if (onConsumed) {
       if (!cache || !cache.length) {
-        onClientPreloaded()
-        onClientPreloaded = null
+        onConsumed()
+        onConsumed = null
       } else {
         resetClientIdleTimer()
       }
@@ -36,9 +36,9 @@ export default ({
 
       script.text = `var ${variable} = "${encodeURI(JSON.stringify(cache))}"`
 
-      if (onServerRendered) {
-        onServerRendered()
-        onServerRendered = null
+      if (onCached) {
+        onCached()
+        onCached = null
       }
     }, 400)
   }
@@ -46,11 +46,11 @@ export default ({
   function resetClientIdleTimer() {
     clearTimeout(clientIdleTimer)
 
-    if (onClientPreloaded) {
+    if (onConsumed) {
       clientIdleTimer = setTimeout(() => {
-        if (onClientPreloaded) {
-          onClientPreloaded()
-          onClientPreloaded = null
+        if (onConsumed) {
+          onConsumed()
+          onConsumed = null
         }
       }, 400)
     }
@@ -106,12 +106,12 @@ export default ({
       if (!cache.length) {
         cache = null
 
-        if (onClientPreloaded) {
+        if (onConsumed) {
           clearTimeout(clientIdleTimer)
 
           setTimeout(() => {
-            onClientPreloaded()
-            onClientPreloaded = null
+            onConsumed()
+            onConsumed = null
           })
         }
       }

@@ -5,8 +5,8 @@ var index = (function (_temp) {
       _ref$mode = _ref.mode,
       mode = _ref$mode === void 0 ? !window[variable] && /Headless/i.test(navigator.userAgent) ? 'server' : 'client' : _ref$mode,
       cacheKeyGenerator = _ref.cacheKeyGenerator,
-      onServerRendered = _ref.onServerRendered,
-      onClientPreloaded = _ref.onClientPreloaded;
+      onCached = _ref.onCached,
+      onConsumed = _ref.onConsumed;
 
   var cache, script, serverIdleTimer, clientIdleTimer;
 
@@ -18,10 +18,10 @@ var index = (function (_temp) {
       cache = window[variable] = JSON.parse(decodeURI(window[variable]));
     }
 
-    if (onClientPreloaded) {
+    if (onConsumed) {
       if (!cache || !cache.length) {
-        onClientPreloaded();
-        onClientPreloaded = null;
+        onConsumed();
+        onConsumed = null;
       } else {
         resetClientIdleTimer();
       }
@@ -38,9 +38,9 @@ var index = (function (_temp) {
 
       script.text = "var " + variable + " = \"" + encodeURI(JSON.stringify(cache)) + "\"";
 
-      if (onServerRendered) {
-        onServerRendered();
-        onServerRendered = null;
+      if (onCached) {
+        onCached();
+        onCached = null;
       }
     }, 400);
   }
@@ -48,11 +48,11 @@ var index = (function (_temp) {
   function resetClientIdleTimer() {
     clearTimeout(clientIdleTimer);
 
-    if (onClientPreloaded) {
+    if (onConsumed) {
       clientIdleTimer = setTimeout(function () {
-        if (onClientPreloaded) {
-          onClientPreloaded();
-          onClientPreloaded = null;
+        if (onConsumed) {
+          onConsumed();
+          onConsumed = null;
         }
       }, 400);
     }
@@ -109,11 +109,11 @@ var index = (function (_temp) {
       if (!cache.length) {
         cache = null;
 
-        if (onClientPreloaded) {
+        if (onConsumed) {
           clearTimeout(clientIdleTimer);
           setTimeout(function () {
-            onClientPreloaded();
-            onClientPreloaded = null;
+            onConsumed();
+            onConsumed = null;
           });
         }
       }
